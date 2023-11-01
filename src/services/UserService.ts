@@ -1,3 +1,4 @@
+import { createToken } from "../middleware/utils/jwt";
 import MongoConnection from "./mongoService";
 
 export default class UserService{
@@ -8,16 +9,21 @@ export default class UserService{
         this.dbService = dbService;
     }
 
-    login = async (user: User): Promise<boolean> => {
+    private login = async (user: User): Promise<string> => {
         const email = user.getEmail();
         const userFromDataBase =  await this.dbService.getUser(email);
         if(userFromDataBase){
-            return userFromDataBase.getEncryptedPassword() === user.getEncryptedPassword()
+            const isCorrectLogin = userFromDataBase.getEncryptedPassword() === user.getEncryptedPassword();
+            if(isCorrectLogin){
+                return createToken({email: user.getEmail()})
+            }
+            throw new Error("email o contraseña no correcto")
         }
-        return false;
+        throw new Error("usuario no existe")
     }
 
-    signin = async(user: User): Promise<void> => {
+    private signin = async(user: User): Promise<string> => {
         await this.dbService.saveUser(user)
+        return createToken({email: user.getEmail()})
     }
 }

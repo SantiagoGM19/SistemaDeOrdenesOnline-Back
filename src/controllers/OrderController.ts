@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import OrderDTO from "../model/OrderDTO";
 
 export default class OrderController{
 
@@ -18,7 +19,8 @@ export default class OrderController{
 
     saveOrder = async (req: Request, res: Response) => {
         try {
-            const order: Order = req.body;
+            const orderDTO: OrderDTO = req.body;
+            const order: Order = orderDTO.DTOToEntity();
             await this.dbService.saveOrder(order);
             return res.status(200).send({message: "Orden registrada"});
         } catch (error) {
