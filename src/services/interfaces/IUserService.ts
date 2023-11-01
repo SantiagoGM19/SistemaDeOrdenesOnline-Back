@@ -1,3 +1,4 @@
+import User from "../../model/User";
 import { UserDTOConToken } from "../../model/UserDTO";
 
 export default interface IUserService{

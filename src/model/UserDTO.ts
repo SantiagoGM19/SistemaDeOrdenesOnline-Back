@@ -1,13 +1,14 @@
-export class UserDTOSinRol{
-    private email: string
-    private encryptedPassword: string
-    constructor(email: string, encryptedPassword: string){
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
+import User from "./User";
+
+export class UserDTOFactory{
+    public static DTOToEntity = (UserDTOSinRol: UserDTOSinRol) =>{
+        return new User(UserDTOSinRol.email, UserDTOSinRol.encryptedPassword, "usuario_normal")
     }
-    DTOToEntity(){
-        return new User(this.email, this.encryptedPassword, "usuario_normal")
-    }
+}
+
+export interface UserDTOSinRol{
+    email: string,
+    encryptedPassword: string
 }
 
 export interface UserDTOConToken{

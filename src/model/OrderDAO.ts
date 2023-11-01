@@ -1,13 +1,16 @@
 import {ObjectId} from "mongodb";
+import Product from "./Product";
+import Order from "./Order";
 
-export default class OrderDAO{
-    constructor(
-        public _id: ObjectId,
-        public products: Product[],
-        public totalPrice: number
-    ){}
+export class OrderDAOFactory{
 
-    DAOToEntity(): Order{
-        return new Order(this.products);
+    static DAOToEntity(order: OrderDAO): Order{
+        return new Order(order.products);
     }
+}
+
+export interface OrderDAO{
+    _id: ObjectId,
+    products: Product[],
+    totalPrice: number
 }

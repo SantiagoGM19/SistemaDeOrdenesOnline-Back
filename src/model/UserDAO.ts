@@ -1,18 +1,23 @@
 import {ObjectId} from "mongodb";
+import User from "./User";
 
-export default class UserDAO{
-    constructor(
-        public _id: ObjectId,
-        public email: string,
-        public encryptedPassword: string,
-        public rol: string
-    ){}
+export default class UserDAOFactory{
 
-    DAOToEntity(): User{
-        return new User(this.email, this.encryptedPassword, this.rol);
+    static DAOToEntity(user: UserDAO): User{
+        return new User(user.email, user.encryptedPassword, user.rol);
     }
 
     static EntityToDAO(user: User): UserDAO{
-        return new UserDAO(new ObjectId(), user.getEmail(), user.getEncryptedPassword(), "usuario_normal");
+        return {_id: new ObjectId(), 
+            email: user.getEmail(),
+            encryptedPassword: user.getEncryptedPassword(), 
+            rol: "usuario_normal"};
     }
+}
+
+export interface UserDAO{
+        _id: ObjectId,
+        email: string,
+        encryptedPassword: string,
+        rol: string
 }

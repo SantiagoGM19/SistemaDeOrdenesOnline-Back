@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import {UserDTOSinRol} from "../model/UserDTO";
+import {UserDTOFactory, UserDTOSinRol} from "../model/UserDTO";
 import IUserService from "../services/interfaces/IUserService";
+import { UserCredentialsIncorrect, UserDoesNotExist } from "../model/exceptions/DomainExceptions";
 
 export default class UserController{
 
@@ -13,7 +14,7 @@ export default class UserController{
     login = async (req: Request, res: Response) => {
         try {
             const user: UserDTOSinRol = req.body;
-            const userConToken = await this.userService.login(user.DTOToEntity());
+            const userConToken = await this.userService.login(UserDTOFactory.DTOToEntity(user));
             return res.status(202).send({userConToken:userConToken, message: "Usuario autorizado"})
         } catch (error) {
             if(error instanceof UserDoesNotExist){
@@ -29,9 +30,10 @@ export default class UserController{
     signin = async (req: Request, res: Response) => {
         try {
             const user: UserDTOSinRol = req.body;
-            await this.userService.signin(user.DTOToEntity());
-            return res.status(200).send({message: "Usuario registrado"})
+            const token = await this.userService.signin(UserDTOFactory.DTOToEntity(user));
+            return res.status(200).send({token:token, message: "Usuario registrado"})
         } catch (error) {
+            console.log(error);
             return res.status(500).send({message: "Ocurrio un error en el servidor"})
         }
     }

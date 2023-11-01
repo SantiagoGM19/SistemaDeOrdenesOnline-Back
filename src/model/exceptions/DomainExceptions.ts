@@ -1,10 +1,10 @@
-class UserDoesNotExist extends Error{
+export class UserDoesNotExist extends Error{
     constructor(message: string){
         super(message);
     }
 }
 
-class UserCredentialsIncorrect extends Error{
+export class UserCredentialsIncorrect extends Error{
     constructor(message: string){
         super(message);
     }

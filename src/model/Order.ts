@@ -1,4 +1,6 @@
-class Order{
+import Product from "./Product";
+
+export default class Order{
     private products: Product[];
     private totalPrice: number;
     

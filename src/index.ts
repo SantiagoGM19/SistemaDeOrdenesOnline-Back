@@ -14,6 +14,6 @@ app.use(cors())
 
 app.use(router);
 
-app.listen(process.env.PORT_DEV, () => {
+app.listen(process.env.PORT_DEV?process.env.PORT_DEV:"3000", () => {
   console.log('Server running on port 3000');
 });

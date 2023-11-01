@@ -1,5 +1,8 @@
 import { createToken } from "../../middleware/utils/jwt";
+import User from "../../model/User";
 import { UserDTOConToken } from "../../model/UserDTO";
+import { UserCredentialsIncorrect, UserDoesNotExist } from "../../model/exceptions/DomainExceptions";
+import IDataBase from "../interfaces/IDataBase";
 import IUserService from "../interfaces/IUserService";
 
 export default class UserService implements IUserService{

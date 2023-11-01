@@ -1,3 +1,5 @@
+import Order from "../../model/Order";
+import IDataBase from "../interfaces/IDataBase";
 import IOrderService from "../interfaces/IOrderService";
 
 export default class OrderService implements IOrderService{

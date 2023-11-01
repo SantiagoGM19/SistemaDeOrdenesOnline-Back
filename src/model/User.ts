@@ -1,4 +1,4 @@
-class User{
+export default class User{
     private email: string
     private encryptedPassword: string
     private rol:string

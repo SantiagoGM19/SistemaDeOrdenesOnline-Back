@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Verificador from "./Verificador";
-import OrderDTO from "../model/OrderDTO";
+import User from "../model/User";
+import { OrderDTO } from "../model/OrderDTO";
 
 export default class Saneador extends Verificador{
     
@@ -15,10 +16,13 @@ export default class Saneador extends Verificador{
             this.proximaVerificacion?.verificar(req, res);
         }
         if(object instanceof OrderDTO){
-            if(object.getProductsListLength() === 0){
+            if(object.getProducts.length === 0){
                 return res.status(400).send({message:"La lista de la orden debe tener por lo menos un producto"});
             }
             this.proximaVerificacion?.verificar(req, res);
+        }
+        if(Object.keys(object).length === 0){
+            this.proximaVerificacion?.verificar(req,res);
         }
     }
     

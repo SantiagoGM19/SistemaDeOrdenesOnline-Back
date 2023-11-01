@@ -1,16 +1,16 @@
+import { Request, Response } from "express";
 import Verificador from "./Verificador";
 
 export default class FiltroDeSolicitudes extends Verificador{
 
-    private conteoIPRequest: Map<string, number> = new Map();  
-    private ipBloqueadas: Map<string, number> = new Map();
+    private conteoIPRequest: Map<string|undefined, number> = new Map();  
+    private ipBloqueadas: Map<string|undefined, number> = new Map();
     private intentosMaximos: number = 3;
     private tiempoMaximoBloqueo: number = 60000; //milisegundos
     
-    verificar(infoSolicitud: any) {
-
-        if (infoSolicitud.solicitudFallida) {
-            const ip = infoSolicitud.connection.remoteAddress;
+    verificar(req: Request, res: Response) {
+        if (req.body.solicitudFallida) {
+            const ip = req.ip;
             const intentosRequest = this.conteoIPRequest.get(ip) || 0;
 
             if (intentosRequest >= this.intentosMaximos) {
@@ -21,7 +21,7 @@ export default class FiltroDeSolicitudes extends Verificador{
                 }else if (tiempoActual-tiempoBloqueo >= this.tiempoMaximoBloqueo){
                     this.limpiarBloqueo(ip);
                 }else{
-                    throw new IpBloqueadaError('Esta IP está bloqueada por varios intentos fallidos');
+                    return res.status(403).send({message: "Esta IP está bloqueada por varios intentos fallidos"})
                 }
             } else {
                 this.conteoIPRequest.set(ip, intentosRequest + 1);
@@ -29,15 +29,15 @@ export default class FiltroDeSolicitudes extends Verificador{
         }
 
         if(this.puedeEjecutar()){
-            this.proximaVerificacion?.verificar(infoSolicitud);
+            this.proximaVerificacion?.verificar(req, res);
         }
     }
 
-    bloquearIP(ip: string, tiempoActual:number){
+    bloquearIP(ip: string|undefined, tiempoActual:number){
         this.ipBloqueadas.set(ip+'_bloqueada', tiempoActual);
     }
 
-    limpiarBloqueo(ip: string){
+    limpiarBloqueo(ip: string|undefined){
         this.conteoIPRequest.set(ip, 1);
         this.ipBloqueadas.delete(ip);
     }

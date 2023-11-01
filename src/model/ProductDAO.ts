@@ -1,14 +1,15 @@
 import {ObjectId} from "mongodb"
+import Product from "./Product";
 
-export default class ProductDAO{
-    constructor(
-        public _id: ObjectId,
-        public name: string,
-        public price: number,
-        public description: string
-    ){}
-
-    DAOtoEntity(productDAO: ProductDAO): Product{
+export default class ProductDAOFactory{
+    static DAOtoEntity(productDAO: ProductDAO): Product{
         return new Product(productDAO.name, productDAO.price, productDAO.description);
     }
+}
+
+export interface ProductDAO{
+    _id: ObjectId,
+    name: string,
+    price: number,
+    description: string
 }

@@ -1,3 +1,5 @@
+import Product from "../../model/Product";
+import IDataBase from "../interfaces/IDataBase";
 import IProductService from "../interfaces/IProductService";
 
 export default class ProductService implements IProductService{

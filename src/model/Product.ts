@@ -1,4 +1,4 @@
-class Product{
+export default class Product{
 
     private name: string;
     private price: number;
