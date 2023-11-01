@@ -7,7 +7,7 @@ export default abstract class Verificador{
     
     abstract verificar(req: Request, res: Response):any;
 
-    protected pudeEjecutar():boolean{
+    protected puedeEjecutar():boolean{
         return this.proximaVerificacion != null;
     }
 
