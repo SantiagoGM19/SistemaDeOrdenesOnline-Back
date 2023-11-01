@@ -5,7 +5,7 @@ abstract class Verificador{
     
     abstract verificar(infoSolicitud:any):any;
 
-    protected pudeEjecutar():boolean{
+    protected puedeEjecutar():boolean{
         return this.proximaVerificacion != null;
     }
 

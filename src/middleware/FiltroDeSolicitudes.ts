@@ -23,6 +23,10 @@ export default class FiltroDeSolicitudes extends Verificador{
         } else {
             this.conteoIPRequest.set(ip, intentosRequest + 1);
         }
+
+        if(super.puedeEjecutar()){
+            this.proximaVerificacion?.verificar(infoSolicitud);
+        }
     }
 
     bloquearIP(ip: string, tiempoActual:number){

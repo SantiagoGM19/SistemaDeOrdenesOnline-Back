@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
+    "dev": "nodemon src/index.ts",
     "test": "npm test",
     "debug": "ts-node-dev --respawn --transpile-only --inspect=9229 src/index.ts"
   },
