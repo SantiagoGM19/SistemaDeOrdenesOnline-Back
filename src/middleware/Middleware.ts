@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import EnsambladorDeVerificaciones from "./EnsambladorDeVerificaciones";
 
-class Middleware{
+export default class Middleware{
 
     private ensamblador:EnsambladorDeVerificaciones;
 
@@ -10,7 +10,8 @@ class Middleware{
     }
 
     realizarVerificaciones = (req: Request, res: Response) => {
-            const verificacionGeneral = this.ensamblador.usarAutenticador()
+            const verificacionGeneral = this.ensamblador.usarSaneador()
+            .usarAutenticador()
             .usarFiltroDeSolicitudes()
             .usarCache()
             .build();

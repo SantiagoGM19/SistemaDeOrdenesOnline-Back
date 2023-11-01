@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import OrderDTO from "../model/OrderDTO";
-import OrderService from "../services/OrderService";
+import IOrderService from "../services/interfaces/IOrderService";
 
 export default class OrderController{
 
-    private orderService: OrderService;
+    private orderService: IOrderService;
 
-    constructor(orderService: OrderService){
+    constructor(orderService: IOrderService){
         this.orderService = orderService;
     }
 

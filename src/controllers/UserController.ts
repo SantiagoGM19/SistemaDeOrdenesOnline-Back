@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import {UserDTOSinRol} from "../model/UserDTO";
-import UserService from "../services/UserService";
+import IUserService from "../services/interfaces/IUserService";
 
 export default class UserController{
 
-    private userService: UserService;
+    private userService: IUserService;
 
-    constructor(userService: UserService){
+    constructor(userService: IUserService){
         this.userService = userService;
     }
 

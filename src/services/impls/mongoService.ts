@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
-import ProductDAO from "../model/ProductDAO";
-import UserDAO from "../model/UserDAO";
-import OrderDAO from "../model/OrderDAO";
+import ProductDAO from "../../model/ProductDAO";
+import UserDAO from "../../model/UserDAO";
+import OrderDAO from "../../model/OrderDAO";
 
 export default class MongoConnection implements IDataBase{
 
@@ -24,7 +24,7 @@ export default class MongoConnection implements IDataBase{
     getProducts = async(): Promise<Product[]> => {
         try {
             const connection = await this.getConnection()
-            const productsCollection =  connection.collection(process.env.PRODUCTS_COLLECTION?process.env.PRODUCTS_COLLECTION:'products');
+            const productsCollection =  connection.collection(process.env.PRODUCTS_COLLECTION?process.env.PRODUCTS_COLLECTION:'productos');
             const productsfromMongo = (await productsCollection.find().toArray()) as ProductDAO[];
             const productsDomain: Product[] = productsfromMongo.map(product => product.DAOtoEntity(product));
             return productsDomain;
@@ -37,7 +37,7 @@ export default class MongoConnection implements IDataBase{
     saveUser = async (user:User): Promise<void> => {
         try {
             const connection = await this.getConnection();
-            const usersCollection =  connection.collection(process.env.USERS_COLLECTION?process.env.USERS_COLLECTION:'users');
+            const usersCollection =  connection.collection(process.env.USERS_COLLECTION?process.env.USERS_COLLECTION:'usuarios');
             await usersCollection.insertOne(user);
         } catch (error) {
             console.log(error);
@@ -47,7 +47,7 @@ export default class MongoConnection implements IDataBase{
     getUser = async (email: string): Promise<User|null> => {
         try {
             const connection = await this.getConnection();
-            const usersCollection =  connection.collection(process.env.USERS_COLLECTION?process.env.USERS_COLLECTION:'users');
+            const usersCollection =  connection.collection(process.env.USERS_COLLECTION?process.env.USERS_COLLECTION:'usuarios');
             const usersFromMongo: UserDAO = (await usersCollection.findOne({"email":email})) as UserDAO;
             if(usersFromMongo){
                 return usersFromMongo.DAOToEntity();

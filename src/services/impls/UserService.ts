@@ -1,7 +1,8 @@
-import { createToken } from "../middleware/utils/jwt";
-import { UserDTOConToken } from "../model/UserDTO";
+import { createToken } from "../../middleware/utils/jwt";
+import { UserDTOConToken } from "../../model/UserDTO";
+import IUserService from "../interfaces/IUserService";
 
-export default class UserService{
+export default class UserService implements IUserService{
 
     private dbService: IDataBase;
 

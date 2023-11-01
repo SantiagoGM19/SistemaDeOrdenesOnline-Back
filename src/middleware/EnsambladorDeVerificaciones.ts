@@ -1,6 +1,7 @@
 import Autenticador from "./Autenticador";
 import Cache from "./Cache";
 import FiltroDeSolicitudes from "./FiltroDeSolicitudes";
+import Saneador from "./Saneador";
 import Verificador from "./Verificador";
 
 export default class EnsambladorDeVerificaciones{
@@ -17,6 +18,12 @@ export default class EnsambladorDeVerificaciones{
 
     build(){
         return this.verificaciones[0]
+    }
+
+    usarSaneador = (): EnsambladorDeVerificaciones => {
+        const saneador = new Saneador();
+        const verificaciones = this.agregarVerificacion(saneador);
+        return new EnsambladorDeVerificaciones(verificaciones)
     }
 
     usarAutenticador = ():EnsambladorDeVerificaciones => {

@@ -1,4 +1,6 @@
-export default class OrderService{
+import IOrderService from "../interfaces/IOrderService";
+
+export default class OrderService implements IOrderService{
 
     private dbService: IDataBase;
 

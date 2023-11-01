@@ -1,5 +1,5 @@
 import {createClient}from "redis";
-import MongoConnection from "../services/mongoService";
+import MongoConnection from "../services/impls/mongoService";
 import Verificador from "./Verificador";
 import { Request, Response } from "express";
 
