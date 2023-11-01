@@ -7,24 +7,26 @@ export default class FiltroDeSolicitudes extends Verificador{
     
     verificar(infoSolicitud: any) {
 
-        const ip = infoSolicitud.connection.remoteAddress;
-        const intentosRequest = this.conteoIPRequest.get(ip) || 0;
+        if (infoSolicitud.solicitudFallida) {
+            const ip = infoSolicitud.connection.remoteAddress;
+            const intentosRequest = this.conteoIPRequest.get(ip) || 0;
 
-        if (intentosRequest >= this.intentosMaximos) {
-            const tiempoActual = Date.now();
-            const tiempoBloqueo = this.ipBloqueadas.get(ip+'_bloqueada');
-            if (!tiempoBloqueo) {
-                this.bloquearIP(ip, tiempoActual);
-            }else if (tiempoActual-tiempoBloqueo >= this.tiempoMaximoBloqueo){
-                this.limpiarBloqueo(ip);
-            }else{
-                throw new Error('Esta IP está bloqueada');
+            if (intentosRequest >= this.intentosMaximos) {
+                const tiempoActual = Date.now();
+                const tiempoBloqueo = this.ipBloqueadas.get(ip+'_bloqueada');
+                if (!tiempoBloqueo) {
+                    this.bloquearIP(ip, tiempoActual);
+                }else if (tiempoActual-tiempoBloqueo >= this.tiempoMaximoBloqueo){
+                    this.limpiarBloqueo(ip);
+                }else{
+                    throw new IpBloqueadaError('Esta IP está bloqueada por varios intentos fallidos');
+                }
+            } else {
+                this.conteoIPRequest.set(ip, intentosRequest + 1);
             }
-        } else {
-            this.conteoIPRequest.set(ip, intentosRequest + 1);
         }
 
-        if(super.puedeEjecutar()){
+        if(this.puedeEjecutar()){
             this.proximaVerificacion?.verificar(infoSolicitud);
         }
     }
