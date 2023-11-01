@@ -14,12 +14,12 @@ export default class Cache extends Verificador{
             const productos: string | null = await this.client.get('productos');
             if(productos){
                 await this.client.quit()
-                return res.status(200).send(JSON.parse(productos?productos:""));
+                return res.status(201).send(JSON.parse(productos?productos:""));
             }else{
                 const productsFromMongo = await this.mongoService.getProducts();
                 await this.client.set('productos', JSON.stringify(productsFromMongo));
                 await this.client.quit()
-                return res.status(200).send(productsFromMongo);
+                return res.status(201).send(productsFromMongo);
             }
         }        
     }

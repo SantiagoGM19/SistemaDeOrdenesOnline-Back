@@ -16,6 +16,9 @@ export default class Middleware{
             .usarCache()
             .build();
             verificacionGeneral.verificar(req, res);
-            next();
+            
+            if (res.statusCode !== 401 && res.statusCode !== 403 && res.statusCode !== 400 && res.statusCode !== 201) {
+                next();
+            } 
     }
 }
