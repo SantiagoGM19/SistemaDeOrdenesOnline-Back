@@ -1,12 +1,12 @@
 import Product from "./Product";
 
 export default class Order{
-    private products: Product[];
-    private totalPrice: number;
+    public products: Product[];
+    public totalPrice: number;
     
     constructor(products: Product[]) {
         this.products =  products;
-        this.totalPrice =  products.map(product => product.getPrice())
+        this.totalPrice =  products.map(product => product.price)
         .reduce((previousValue, currentValue) => previousValue + currentValue, 0);
     }
 

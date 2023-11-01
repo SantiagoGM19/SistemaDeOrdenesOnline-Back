@@ -9,16 +9,18 @@ export default class Cache extends Verificador{
     mongoService = new MongoConnection();
     
     async verificar(req: Request, res: Response) {
-        await this.client.connect();
-        const productos: string | null = await this.client.get('productos');
-        if(productos){
-            await this.client.quit()
-            return res.status(200).send(JSON.parse(productos?productos:""));
-        }else{
-            const productsFromMongo = await this.mongoService.getProducts();
-            await this.client.set('productos', JSON.stringify(productsFromMongo));
-            await this.client.quit()
-            return res.status(200).send(productsFromMongo);
-        }
+        if (req.url === "/products") {
+            await this.client.connect();
+            const productos: string | null = await this.client.get('productos');
+            if(productos){
+                await this.client.quit()
+                return res.status(200).send(JSON.parse(productos?productos:""));
+            }else{
+                const productsFromMongo = await this.mongoService.getProducts();
+                await this.client.set('productos', JSON.stringify(productsFromMongo));
+                await this.client.quit()
+                return res.status(200).send(productsFromMongo);
+            }
+        }        
     }
 }

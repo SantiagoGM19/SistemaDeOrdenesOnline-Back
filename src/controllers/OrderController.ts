@@ -8,7 +8,7 @@ export default class OrderController{
     private orderService: IOrderService;
 
     constructor(orderService: IOrderService){
-        this.orderService = orderService;
+        this.orderService = orderService;      
     }
 
     getOrders = async (req: Request, res: Response) => {
@@ -22,8 +22,6 @@ export default class OrderController{
     saveOrder = async (req: Request, res: Response) => {
         try {
             const orderDTO: OrderDTO = req.body;
-            console.log(orderDTO);
-            
             const order: Order = OrderDTOFactory.DTOToEntity(orderDTO);
             await this.orderService.saveOrder(order);
             return res.status(200).send({message: "Orden registrada"});

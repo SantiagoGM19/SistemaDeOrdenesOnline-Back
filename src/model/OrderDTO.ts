@@ -3,12 +3,12 @@ import Product from "./Product";
 
 export class OrderDTOFactory{
     static DTOToEntity(orderDTO: OrderDTO){
-        return new Order(orderDTO.getProducts());
+        return new Order(orderDTO.products);
     }
 }
 
 export class OrderDTO{
-    private products:Product[]
+    public products:Product[]
     constructor(products: Product[]){
         this.products = products;
     }

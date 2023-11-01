@@ -33,7 +33,6 @@ export default class UserController{
             const token = await this.userService.signin(UserDTOFactory.DTOToEntity(user));
             return res.status(200).send({token:token, message: "Usuario registrado"})
         } catch (error) {
-            console.log(error);
             return res.status(500).send({message: "Ocurrio un error en el servidor"})
         }
     }

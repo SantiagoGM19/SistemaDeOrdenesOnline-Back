@@ -1,8 +1,8 @@
 export default class Product{
 
-    private name: string;
-    private price: number;
-    private description: string;
+    public name: string;
+    public price: number;
+    public description: string;
 
     constructor(name: string, price: number, description: string){
         this.name = name;
