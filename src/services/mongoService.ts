@@ -1,8 +1,9 @@
 import { Db, MongoClient } from "mongodb";
 import ProductDAO from "../model/ProductDAO";
 import UserDAO from "../model/UserDAO";
+import OrderDAO from "../model/OrderDAO";
 
-export default class MongoConnection{
+export default class MongoConnection implements IDataBase{
 
     private client: MongoClient;
 
@@ -40,7 +41,6 @@ export default class MongoConnection{
             await usersCollection.insertOne(user);
         } catch (error) {
             console.log(error);
-            
         }
     }
 
@@ -56,6 +56,30 @@ export default class MongoConnection{
         } catch (error) {
             console.log();
             return null;
+        }
+    }
+
+    getOrders =async (): Promise<Order[]> => {
+        try {
+            const connection = await this.getConnection();
+            const odersCollection =  connection.collection(process.env.ORDERS_COLLECTION?process.env.ORDERS_COLLECTION:'orders');
+            const ordersFromMongo: OrderDAO[] = (await odersCollection.find().toArray()) as OrderDAO[];
+            const orders: Order[] = ordersFromMongo.map(order => order.DAOToEntity());
+        return orders;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    saveOrder = async (order:Order): Promise<void> => {
+        try {
+            const connection = await this.getConnection();
+            const usersCollection =  connection.collection(process.env.ORDERS_COLLECTION?process.env.ORDERS_COLLECTION:'orders');
+            await usersCollection.insertOne(order);
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 }
