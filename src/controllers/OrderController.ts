@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
 import OrderDTO from "../model/OrderDTO";
+import OrderService from "../services/OrderService";
 
 export default class OrderController{
 
-    private dbService: IDataBase;
+    private orderService: OrderService;
 
-    constructor(dbService: IDataBase){
-        this.dbService = dbService;
+    constructor(orderService: OrderService){
+        this.orderService = orderService;
     }
 
     getOrders = async (req: Request, res: Response) => {
         try {
-            return res.status(200).send(await this.dbService.getOrders());
+            return res.status(200).send(await this.orderService.getOrders());
         } catch (error) {
             return res.status(500).send({message: "Ha ocurrido un error de servidor"});
         }
@@ -21,7 +22,7 @@ export default class OrderController{
         try {
             const orderDTO: OrderDTO = req.body;
             const order: Order = orderDTO.DTOToEntity();
-            await this.dbService.saveOrder(order);
+            await this.orderService.saveOrder(order);
             return res.status(200).send({message: "Orden registrada"});
         } catch (error) {
             return res.status(500).send({message: "Ha ocurrido un error de servidor"});
