@@ -1,9 +1,11 @@
-abstract class Verificador{
+import { Request, Response } from "express";
+
+export default abstract class Verificador{
 
     protected proximaVerificacion:Verificador|null = null;
 
     
-    abstract verificar(infoSolicitud:any):any;
+    abstract verificar(req: Request, res: Response):any;
 
     protected pudeEjecutar():boolean{
         return this.proximaVerificacion != null;
@@ -11,5 +13,9 @@ abstract class Verificador{
 
     setProximaVerificacion(proximaVerificacion:Verificador){
         this.proximaVerificacion = proximaVerificacion;
+    }
+    
+    getProximaVerificacion(){
+        return this.proximaVerificacion;
     }
 }

@@ -1,3 +1,5 @@
+import Verificador from "./Verificador";
+
 export default class FiltroDeSolicitudes extends Verificador{
     
     verificar(infoSolicitud: any) {
