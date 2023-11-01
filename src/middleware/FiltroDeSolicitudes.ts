@@ -16,20 +16,23 @@ export default class FiltroDeSolicitudes extends Verificador{
             if (intentosRequest >= this.intentosMaximos) {
                 const tiempoActual = Date.now();
                 const tiempoBloqueo = this.ipBloqueadas.get(ip+'_bloqueada');
-                if (!tiempoBloqueo) {
+                if (!tiempoBloqueo) {                    
                     this.bloquearIP(ip, tiempoActual);
+                    return res.status(403).send({message: "Esta IP está bloqueada por varios intentos fallidos"})
                 }else if (tiempoActual-tiempoBloqueo >= this.tiempoMaximoBloqueo){
                     this.limpiarBloqueo(ip);
+                    return res.status(401).send({message: "La solicitud falló"})
                 }else{
                     return res.status(403).send({message: "Esta IP está bloqueada por varios intentos fallidos"})
                 }
             } else {
                 this.conteoIPRequest.set(ip, intentosRequest + 1);
+                return res.status(401).send({message: "La solicitud falló"})
             }
-        }
-
-        if(this.puedeEjecutar()){
-            this.proximaVerificacion?.verificar(req, res);
+        }else{
+            if(this.puedeEjecutar()){
+                this.proximaVerificacion?.verificar(req, res);
+            }
         }
     }
 
