@@ -1,14 +1,14 @@
 import {createClient}from "redis";
 import MongoConnection from "../services/impls/mongoService";
 import Verificador from "./Verificador";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export default class Cache extends Verificador{
 
     client =  createClient();
     mongoService = new MongoConnection();
     
-    async verificar(req: Request, res: Response) {
+    async verificar(req: Request, res: Response,  next: NextFunction) {
         if (req.url === "/products") {
             await this.client.connect();
             const productos: string | null = await this.client.get('productos');
@@ -21,6 +21,8 @@ export default class Cache extends Verificador{
                 await this.client.quit()
                 return res.status(201).send(productsFromMongo);
             }
-        }        
+        }else{
+            next();
+        }     
     }
 }

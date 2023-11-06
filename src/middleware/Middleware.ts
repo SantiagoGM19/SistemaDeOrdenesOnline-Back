@@ -9,16 +9,12 @@ export default class Middleware{
         this.ensamblador = new EnsambladorDeVerificaciones();
     }
 
-    realizarVerificaciones = (req: Request, res: Response, next: NextFunction) => {
-            const verificacionGeneral = this.ensamblador.usarSaneador()
+    realizarVerificaciones = async (req: Request, res: Response, next: NextFunction) => {
+        const verificacionGeneral = this.ensamblador.usarSaneador()
             .usarAutenticador()
             .usarFiltroDeSolicitudes()
             .usarCache()
             .build();
-            verificacionGeneral.verificar(req, res);
-            
-            if (res.statusCode !== 401 && res.statusCode !== 403 && res.statusCode !== 400 && res.statusCode !== 201) {
-                next();
-            } 
+        await verificacionGeneral.verificar(req, res, next);
     }
 }
