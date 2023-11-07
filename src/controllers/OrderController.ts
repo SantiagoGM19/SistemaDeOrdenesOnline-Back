@@ -13,7 +13,8 @@ export default class OrderController{
 
     getOrders = async (req: Request, res: Response) => {
         try {
-            return res.status(200).send(await this.orderService.getOrders());
+            const data = await this.orderService.getOrders();
+            return res.status(200).send({data: data, status: 200});
         } catch (error) {
             return res.status(500).send({message: "Ha ocurrido un error de servidor"});
         }
@@ -24,7 +25,7 @@ export default class OrderController{
             const orderDTO: OrderDTO = req.body;
             const order: Order = OrderDTOFactory.DTOToEntity(orderDTO);
             await this.orderService.saveOrder(order);
-            return res.status(200).send({message: "Orden registrada"});
+            return res.status(200).send({message: "Orden registrada", status:200});
         } catch (error) {
             return res.status(500).send({message: "Ha ocurrido un error de servidor"});
         }

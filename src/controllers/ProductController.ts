@@ -11,7 +11,8 @@ export default class ProductController{
 
     getProducts = async (req: Request, res: Response) => {
         try {
-            return res.status(200).send(await this.productService.getProducts());
+            const data = await this.productService.getProducts();
+            return res.status(200).send({data: data, status:200});
         } catch (error) {
             return res.status(500).send({message: "Ha ocurrido un error de servidor"});
         }

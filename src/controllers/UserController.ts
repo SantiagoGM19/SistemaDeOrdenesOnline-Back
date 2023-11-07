@@ -15,7 +15,7 @@ export default class UserController{
         try {
             const user: UserDTOSinRol = req.body;
             const userConToken = await this.userService.login(UserDTOFactory.DTOToEntity(user));
-            return res.status(202).send({userConToken:userConToken, message: "Usuario autorizado"})
+            return res.status(202).send({userConToken:userConToken, message: "Usuario autorizado", status:202})
         } catch (error) {
             if(error instanceof UserDoesNotExist){
                 return res.status(404).send({message: "El usuario no existe, no puede hacer login"});
